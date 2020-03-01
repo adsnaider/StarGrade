@@ -5,35 +5,29 @@
 #include <ostream>
 #include <string>
 
-#include "absl/strings/str_cat.h"
 #include "nlohmann/json.hpp"
 
 namespace stargrade {
-namespace {
 
 using ::testing::TestCase;
 using ::testing::TestInfo;
 using ::testing::TestPartResult;
 using ::testing::UnitTest;
 
-// inline const TestInfo *CurrentTest() {
-// return ::testing::UnitTest::GetInstance()->current_test_info();
-//}
-}  // namespace
-
 GradescopeTestListener::GradescopeTestListener(std::ostream &out) : out_(out) {}
 
 void GradescopeTestListener::OnTestStart(const TestInfo &test_info) {
-  current_test_name_ =
-      absl::StrCat(test_info.test_case_name(), "-", test_info.name());
+  current_test_name_ = std::string(test_info.test_case_name()) + "-" +
+                       std::string(test_info.name());
   results_[current_test_name_].id = current_test_name_;
 }
 
 void GradescopeTestListener::OnTestPartResult(
     const TestPartResult &test_part_result) {
   if (test_part_result.failed()) {
-    absl::StrAppend(&results_.at(current_test_name_).output,
-                    test_part_result.message(), "\n=============\n");
+    results_.at(current_test_name_).output +=
+        std::string(test_part_result.message()) +
+        std::string("\n=============\n");
   }
 }
 

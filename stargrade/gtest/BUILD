@@ -5,7 +5,6 @@ cc_library(
     linkopts = ["-l gtest"],
     visibility = ["//visibility:public"],
     deps = [
-        "@abseil//absl/strings",
         "@nlohmann//:json",
     ],
 )
