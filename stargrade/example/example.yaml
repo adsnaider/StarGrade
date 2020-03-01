@@ -1,7 +1,7 @@
 output: Wonderful gradescope
 stdout_visibility: visible
 test_parts:
-  - runfile: "sh"
+  - run: "sh other.sh"
     tests:
       - id: "TestID"
         max_score: 10
@@ -12,7 +12,3 @@ test_parts:
           - a
           - b
           - c
-    args:
-      - "other.sh"
-    flags:
-      - [flag1, value1]

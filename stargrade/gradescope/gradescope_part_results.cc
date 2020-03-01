@@ -21,7 +21,6 @@ constexpr size_t BUFFER_SIZE = 512;
 GradescopePartResults::GradescopePartResults(GradescopePartConfig config)
     : config_(std::move(config)) {
   for (GradescopeTestConfig &config : config_.tests_config) {
-    std::cout << "Test result ID: " << config.id << std::endl;
     tests_.emplace(std::make_pair(config.id, std::move(config)));
   }
 }
@@ -50,7 +49,6 @@ void GradescopePartResults::Execute() {
         test_result.append(buffer, count);
       }
       // TODO: Deserialize
-      std::cerr << test_result << std::endl;
       GradescopePartOutput part_output = nlohmann::json::parse(test_result);
       for (const auto &test_output : part_output) {
         tests_.at(test_output.id).Passed(test_output.passed);
@@ -65,10 +63,12 @@ void GradescopePartResults::Execute() {
     int ofd = fd[1];
     dup2(ofd, /*STD_OUTPUT*/ 1);
     // TODO: permissions?
-    std::stringstream s(config_.run);
+    std::istringstream s(config_.run);
     std::vector<std::string> tokens;
-    std::copy(std::istream_iterator<std::string>(s),
-              std::istream_iterator<std::string>(s), back_inserter(tokens));
+    std::string val;
+    while (s >> val) {
+      tokens.push_back(val);
+    }
     char **argv = new char *[tokens.size() + 1];
     for (int i = 0; i < tokens.size(); ++i) {
       argv[i] = new char[tokens[i].size() + 1];
@@ -76,7 +76,6 @@ void GradescopePartResults::Execute() {
     }
 
     argv[tokens.size()] = nullptr;
-    std::cerr << "Running: " << config_.run << std::endl;
     execvp(argv[0], argv);
   }
 }
