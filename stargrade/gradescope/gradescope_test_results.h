@@ -49,9 +49,13 @@ struct YAML::convert<stargrade::GradescopeTestConfig> {
     rhs.id = node["id"].as<std::string>();
     rhs.max_score = node["max_score"].as<double>();
     rhs.test_name = node["name"].as<std::string>();
-    rhs.number = node["number"].as<std::string>();
+    if (node["number"]) {
+      rhs.number = node["number"].as<std::string>();
+    }
     rhs.visibility = node["visibility"].as<std::string>();
-    rhs.tags = node["tags"].as<std::list<std::string>>();
+    if (node["tags"]) {
+      rhs.tags = node["tags"].as<std::list<std::string>>();
+    }
     return true;
   }
 };

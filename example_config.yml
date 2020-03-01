@@ -1,0 +1,47 @@
+output: Wonderful gradescope
+stdout_visibility: visible
+test_parts:
+  - runfile: "sh"
+    tests:
+      - id: TestID
+        max_score: 10
+        name: Testing for Foo
+        number: "1.1"
+        visibility: hidden
+        tags:
+          - a
+          - b
+          - c
+      - id: TestId2
+        max_score: 20
+        name: testing for bar
+        number: "1.2"
+        visibility: "visible"
+        tags:
+          - b
+          - c
+          - d
+
+    args:
+      - file.sh
+      - arg1
+      - arg2
+    flags:
+      - flag1: value1
+      - flag2: value2
+
+
+  - exec: "sh"
+    tests:
+      - id: CompileTest
+        max_score: 10
+        name: Compilation test
+        output: Test that the code actually compiles.
+        visibility: visible
+    args:
+      - file2.sh
+      - arg1
+      - arg2
+    flags:
+      - flag1: value1
+      - flag2: value2

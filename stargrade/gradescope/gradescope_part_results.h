@@ -47,9 +47,13 @@ template <>
 struct YAML::convert<stargrade::GradescopePartConfig> {
   static bool decode(const Node &node, stargrade::GradescopePartConfig &rhs) {
     rhs.runfile = node["runfile"].as<std::string>();
-    rhs.args = node["args"].as<std::list<std::string>>();
-    rhs.flags =
-        node["flags"].as<std::list<std::pair<std::string, std::string>>>();
+    if (node["args"]) {
+      rhs.args = node["args"].as<std::list<std::string>>();
+    }
+    if (node["flags"]) {
+      rhs.flags =
+          node["flags"].as<std::list<std::pair<std::string, std::string>>>();
+    }
     rhs.tests_config =
         node["tests"].as<std::list<stargrade::GradescopeTestConfig>>();
     return true;
