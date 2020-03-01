@@ -1,10 +1,9 @@
 #include "stargrade/gradescope/gradescope_results.h"
 
+#include <chrono>
 #include <fstream>
+#include <string>
 
-#include "absl/strings/string_view.h"
-#include "absl/time/clock.h"
-#include "absl/time/time.h"
 #include "nlohmann/json.hpp"
 
 namespace stargrade {
@@ -17,15 +16,17 @@ GradescopeResults::GradescopeResults(GradescopeConfig config)
 }
 
 void GradescopeResults::ExecuteAll() {
-  absl::Time start = absl::Now();
+  std::chrono::steady_clock::time_point start =
+      std::chrono::steady_clock::now();
   for (GradescopePartResults &part : parts_) {
     part.Execute();
   }
-  absl::Time end = absl::Now();
-  execution_time_ = end - start;
+  std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+  execution_time_ =
+      std::chrono::duration_cast<std::chrono::seconds>(end - start);
 }
 
-void GradescopeResults::Emit(absl::string_view json) {
+void GradescopeResults::Emit(const std::string &json) {
   std::ofstream out(json.data());
   nlohmann::json j = *this;
   out << j;
@@ -33,8 +34,7 @@ void GradescopeResults::Emit(absl::string_view json) {
 
 void to_json(nlohmann::json &j, const GradescopeResults &gradescope_results) {
   // nlohmann::json parts = gradescope_results.parts_;
-  j["execution_time"] =
-      absl::ToInt64Seconds(gradescope_results.execution_time_);
+  j["execution_time"] = gradescope_results.execution_time_.count();
   j["output"] = gradescope_results.config_.output;
   j["stdout_visibility"] = gradescope_results.config_.stdout_visibility;
   nlohmann::json parts = gradescope_results.parts_;

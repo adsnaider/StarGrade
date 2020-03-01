@@ -13,10 +13,8 @@
 namespace stargrade {
 
 struct GradescopePartConfig {
-  std::string runfile;
-  std::list<GradescopeTestConfig> tests_config;
-  std::list<std::string> args;
-  std::list<std::pair<std::string, std::string>> flags;
+  std::string run;
+  std::vector<GradescopeTestConfig> tests_config;
 };
 
 class GradescopePartResults {
@@ -46,16 +44,9 @@ typedef std::vector<GradescopeTestOutput> GradescopePartOutput;
 template <>
 struct YAML::convert<stargrade::GradescopePartConfig> {
   static bool decode(const Node &node, stargrade::GradescopePartConfig &rhs) {
-    rhs.runfile = node["runfile"].as<std::string>();
-    if (node["args"]) {
-      rhs.args = node["args"].as<std::list<std::string>>();
-    }
-    if (node["flags"]) {
-      rhs.flags =
-          node["flags"].as<std::list<std::pair<std::string, std::string>>>();
-    }
+    rhs.run = node["run"].as<std::string>();
     rhs.tests_config =
-        node["tests"].as<std::list<stargrade::GradescopeTestConfig>>();
+        node["tests"].as<std::vector<stargrade::GradescopeTestConfig>>();
     return true;
   }
 };

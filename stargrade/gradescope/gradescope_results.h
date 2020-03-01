@@ -1,11 +1,10 @@
 #ifndef STARGRADE_GRADESCOPE_GRADESCOPE_RESULTS_H_
 #define STARGRADE_GRADESCOPE_GRADESCOPE_RESULTS_H_
 
+#include <chrono>
 #include <string>
 #include <vector>
 
-#include "absl/strings/string_view.h"
-#include "absl/time/time.h"
 #include "yaml-cpp/yaml.h"
 
 #include "stargrade/gradescope/gradescope_part_results.h"
@@ -24,13 +23,13 @@ class GradescopeResults {
   GradescopeResults(GradescopeConfig config);
 
   void ExecuteAll();
-  void Emit(absl::string_view json);
+  void Emit(const std::string &json);
 
  private:
   std::vector<GradescopePartResults> parts_;
   GradescopeConfig config_;
 
-  absl::Duration execution_time_;
+  std::chrono::seconds execution_time_;
 
   friend void to_json(nlohmann::json &j, const GradescopeResults &);
 };

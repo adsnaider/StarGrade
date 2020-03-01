@@ -7,8 +7,8 @@
 #include <cmath>
 #include <cstring>
 #include <iostream>
+#include <sstream>
 
-#include "absl/strings/str_join.h"
 #include "nlohmann/json.hpp"
 
 namespace stargrade {
@@ -65,27 +65,19 @@ void GradescopePartResults::Execute() {
     int ofd = fd[1];
     dup2(ofd, /*STD_OUTPUT*/ 1);
     // TODO: permissions?
-    // Two extra spaces for execution name and nullptr.
-    char **argv = new char *[config_.args.size() + config_.flags.size() + 2];
-    int i = 0;
-    argv[i] = new char[config_.runfile.size() + 1];
-    strncpy(argv[i++], config_.runfile.c_str(), config_.runfile.size() + 1);
-    for (const std::string &arg : config_.args) {
-      argv[i] = new char[arg.size() + 1];
-      strncpy(argv[i++], arg.c_str(), arg.size() + 1);
+    std::stringstream s(config_.run);
+    std::vector<std::string> tokens;
+    std::copy(std::istream_iterator<std::string>(s),
+              std::istream_iterator<std::string>(s), back_inserter(tokens));
+    char **argv = new char *[tokens.size() + 1];
+    for (int i = 0; i < tokens.size(); ++i) {
+      argv[i] = new char[tokens[i].size() + 1];
+      strncpy(argv[i], tokens[i].c_str(), tokens[i].size() + 1);
     }
 
-    for (const auto &flag : config_.flags) {
-      std::string arg =
-          absl::StrCat("--", absl::StrJoin({flag.first, flag.second}, "="));
-      argv[i] = new char[arg.size() + 1];
-      strncpy(argv[i++], arg.c_str(), arg.size() + 1);
-    }
-    argv[i] = nullptr;
-    std::cerr << "Running: " << config_.runfile.c_str() << std::endl;
-    std::cerr << "Arg #1: " << argv[0] << std::endl;
-    std::cerr << "Arg #2: " << argv[1] << std::endl;
-    execvp(config_.runfile.c_str(), argv);
+    argv[tokens.size()] = nullptr;
+    std::cerr << "Running: " << config_.run << std::endl;
+    execvp(argv[0], argv);
   }
 }
 

@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include "absl/strings/string_view.h"
-
 namespace stargrade {
 
 class GradescopeVisibility {
@@ -13,7 +11,7 @@ class GradescopeVisibility {
   GradescopeVisibility() = default;
   GradescopeVisibility(VisibilityType value) : value_(value) {}
 
-  explicit GradescopeVisibility(absl::string_view value)
+  explicit GradescopeVisibility(const std::string &value)
       : value_(FromString(value)) {}
 
   GradescopeVisibility &operator=(VisibilityType value) {
@@ -21,7 +19,7 @@ class GradescopeVisibility {
     return *this;
   }
 
-  GradescopeVisibility &operator=(absl::string_view value) {
+  GradescopeVisibility &operator=(const std::string &value) {
     value_ = FromString(value);
     return *this;
   }
@@ -31,7 +29,7 @@ class GradescopeVisibility {
  private:
   VisibilityType value_;
 
-  static VisibilityType FromString(absl::string_view value) {
+  static VisibilityType FromString(const std::string &value) {
     if (value == "visible") {
       return VISIBLE;
     } else if (value == "after_due_date") {

@@ -5,8 +5,8 @@
 #include <memory>
 #include <ostream>
 #include <string>
+#include <unordered_map>
 
-#include "absl/container/flat_hash_map.h"
 #include "nlohmann/json.hpp"
 
 namespace stargrade {
@@ -34,7 +34,7 @@ class GradescopeTestListener : public ::testing::EmptyTestEventListener {
       const testing::UnitTest & /*unit_test*/) override;
 
   std::ostream &out_;
-  absl::flat_hash_map<std::string, GradescopeTestOutput> results_;
+  std::unordered_map<std::string, GradescopeTestOutput> results_;
 
   std::string current_test_name_;
 };
