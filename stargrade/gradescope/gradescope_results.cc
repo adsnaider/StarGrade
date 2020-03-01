@@ -1,0 +1,47 @@
+#include "stargrade/gradescope/gradescope_results.h"
+
+#include <fstream>
+
+#include "absl/strings/string_view.h"
+#include "absl/time/clock.h"
+#include "absl/time/time.h"
+#include "nlohmann/json.hpp"
+
+namespace stargrade {
+
+GradescopeResults::GradescopeResults(GradescopeConfig config)
+    : config_(std::move(config)) {
+  for (GradescopePartConfig &part : config_.part_config) {
+    parts_.emplace_back(std::move(part));
+  }
+}
+
+void GradescopeResults::ExecuteAll() {
+  absl::Time start = absl::Now();
+  for (GradescopePartResults &part : parts_) {
+    part.Execute();
+  }
+  absl::Time end = absl::Now();
+  execution_time_ = end - start;
+}
+
+void GradescopeResults::Emit(absl::string_view json) {
+  std::ofstream out(json.data());
+  nlohmann::json j = *this;
+  out << j;
+}
+
+void to_json(nlohmann::json &j, const GradescopeResults &gradescope_results) {
+  // nlohmann::json parts = gradescope_results.parts_;
+  j["execution_time"] =
+      absl::ToInt64Seconds(gradescope_results.execution_time_);
+  j["output"] = gradescope_results.config_.output;
+  j["stdout_visibility"] = gradescope_results.config_.stdout_visibility;
+  nlohmann::json parts = gradescope_results.parts_;
+  j["tests"] = nlohmann::json::array();
+  for (const auto &part : parts) {
+    j["tests"].insert(j["tests"].end(), part.begin(), part.end());
+  }
+}
+
+}  // namespace stargrade

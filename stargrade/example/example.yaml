@@ -1,0 +1,18 @@
+output: Wonderful gradescope
+stdout_visibility: visible
+test_parts:
+  - runfile: "sh"
+    tests:
+      - id: "TestID"
+        max_score: 10
+        name: Testing for Foo
+        number: "1.1"
+        visibility: hidden
+        tags:
+          - a
+          - b
+          - c
+    args:
+      - "other.sh"
+    flags:
+      - [flag1, value1]

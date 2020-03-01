@@ -9,6 +9,12 @@ git_repository(
     remote = "git@github.com:jbeder/yaml-cpp.git",
 )
 
+git_repository(
+    name = "abseil",
+    remote = "git@github.com:abseil/abseil-cpp.git",
+    branch = "master",
+)
+
 http_archive(
     name = "nlohmann",
     build_file = "@//third_party/rules:BUILD.nlohmann",
