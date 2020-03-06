@@ -3,11 +3,10 @@
 
 #include <gtest/gtest.h>
 #include <memory>
+#include <nlohmann/json.hpp>
 #include <ostream>
 #include <string>
 #include <unordered_map>
-
-#include "nlohmann/json.hpp"
 
 namespace stargrade {
 
