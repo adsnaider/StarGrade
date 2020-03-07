@@ -10,3 +10,13 @@ cc_library(
         "@nlohmann//:json",
     ],
 )
+
+cc_library(
+    name = "gradescope_test_main",
+    srcs = ["gradescope_test_main.cc"],
+    linkopts = [
+        "-l gtest",
+        "-l pthread",
+    ],
+    linkstatic = True,
+)

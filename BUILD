@@ -19,7 +19,10 @@ pkg_tar(
 
 pkg_tar(
     name = "gradescope_test_listener-lib",
-    srcs = ["//stargrade/gtest:gradescope_test_listener"],
+    srcs = [
+        "//stargrade/gtest:gradescope_test_listener",
+        "//stargrade/gtest:gradescope_test_main",
+    ],
     mode = "0755",
     package_dir = "/usr/lib",
 )
@@ -28,7 +31,7 @@ pkg_tar(
     name = "gradescope_test_listener-include",
     srcs = ["//stargrade/gtest:gradescope_test_listener.h"],
     mode = "0644",
-    package_dir = "/usr/include/stargrade",
+    package_dir = "/usr/include/stargrade/gtest",
 )
 
 pkg_tar(
