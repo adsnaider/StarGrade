@@ -6,13 +6,13 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 git_repository(
     name = "yaml_cpp",
     commit = "de8253fcb075c049c4ad1c466c504bf3cf022f45",
-    remote = "git@github.com:jbeder/yaml-cpp.git",
+    remote = "https://github.com/jbeder/yaml-cpp.git",
 )
 
 git_repository(
     name = "abseil",
     branch = "master",
-    remote = "git@github.com:abseil/abseil-cpp.git",
+    remote = "https://github.com/abseil/abseil-cpp.git",
 )
 
 http_archive(
