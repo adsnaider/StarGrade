@@ -19,4 +19,5 @@ cc_library(
         "-l pthread",
     ],
     linkstatic = True,
+    deps = [":gradescope_test_listener"],
 )

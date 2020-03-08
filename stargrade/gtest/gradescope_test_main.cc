@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <stargrade/gtest/gradescope_test_listener.h>
+#include "stargrade/gtest/gradescope_test_listener.h"
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
