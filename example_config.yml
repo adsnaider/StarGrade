@@ -1,7 +1,7 @@
 output: Wonderful gradescope
 stdout_visibility: visible
 test_parts:
-  - runfile: "sh"
+  - run: "make tests"
     tests:
       - id: TestID
         max_score: 10
@@ -22,26 +22,10 @@ test_parts:
           - c
           - d
 
-    args:
-      - file.sh
-      - arg1
-      - arg2
-    flags:
-      - flag1: value1
-      - flag2: value2
-
-
-  - exec: "sh"
+  - run: "make tests2"
     tests:
       - id: CompileTest
         max_score: 10
         name: Compilation test
         output: Test that the code actually compiles.
         visibility: visible
-    args:
-      - file2.sh
-      - arg1
-      - arg2
-    flags:
-      - flag1: value1
-      - flag2: value2

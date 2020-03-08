@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "absl/types/optional.h"
 #include "yaml-cpp/yaml.h"
 
 #include "stargrade/gradescope/gradescope_part_results.h"
@@ -13,8 +14,8 @@
 namespace stargrade {
 
 struct GradescopeConfig {
-  std::string output;
-  GradescopeVisibility stdout_visibility;
+  absl::optional<std::string> output;
+  absl::optional<GradescopeVisibility> stdout_visibility;
   std::list<GradescopePartConfig> part_config;
 };
 
@@ -39,8 +40,13 @@ class GradescopeResults {
 template <>
 struct YAML::convert<stargrade::GradescopeConfig> {
   static bool decode(const Node &node, stargrade::GradescopeConfig &rhs) {
-    rhs.output = node["output"].as<std::string>();
-    rhs.stdout_visibility = node["stdout_visibility"].as<std::string>();
+    if (!node["test_parts"]) return false;
+    if (node["output"]) {
+      rhs.output = node["output"].as<std::string>();
+    }
+    if (node["visibility"]) {
+      rhs.stdout_visibility = node["stdout_visibility"].as<std::string>();
+    }
     rhs.part_config =
         node["test_parts"].as<std::list<stargrade::GradescopePartConfig>>();
     return true;

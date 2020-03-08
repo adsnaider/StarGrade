@@ -8,6 +8,7 @@ cc_library(
     deps = [
         ":gradescope_part_results",
         ":gradescope_visibility",
+        "@abseil//absl/types:optional",
         "@nlohmann//:json",
         "@yaml_cpp//:yaml-cpp",
     ],
@@ -30,6 +31,7 @@ cc_library(
     hdrs = ["gradescope_test_results.h"],
     deps = [
         ":gradescope_visibility",
+        "@abseil//absl/types:optional",
         "@nlohmann//:json",
         "@yaml_cpp//:yaml-cpp",
     ],

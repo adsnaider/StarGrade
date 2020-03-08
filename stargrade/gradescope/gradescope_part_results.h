@@ -44,6 +44,8 @@ typedef std::vector<GradescopeTestOutput> GradescopePartOutput;
 template <>
 struct YAML::convert<stargrade::GradescopePartConfig> {
   static bool decode(const Node &node, stargrade::GradescopePartConfig &rhs) {
+    if (!node["run"]) return false;
+    if (!node["tests"]) return false;
     rhs.run = node["run"].as<std::string>();
     rhs.tests_config =
         node["tests"].as<std::vector<stargrade::GradescopeTestConfig>>();

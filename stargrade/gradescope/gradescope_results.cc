@@ -35,8 +35,13 @@ void GradescopeResults::Emit(const std::string &json) {
 void to_json(nlohmann::json &j, const GradescopeResults &gradescope_results) {
   // nlohmann::json parts = gradescope_results.parts_;
   j["execution_time"] = gradescope_results.execution_time_.count();
-  j["output"] = gradescope_results.config_.output;
-  j["stdout_visibility"] = gradescope_results.config_.stdout_visibility;
+  if (gradescope_results.config_.output) {
+    j["output"] = gradescope_results.config_.output.value();
+  }
+  if (gradescope_results.config_.stdout_visibility) {
+    j["stdout_visibility"] =
+        gradescope_results.config_.stdout_visibility.value();
+  }
   nlohmann::json parts = gradescope_results.parts_;
   j["tests"] = nlohmann::json::array();
   for (const auto &part : parts) {

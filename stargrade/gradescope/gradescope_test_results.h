@@ -4,6 +4,7 @@
 #include <list>
 #include <string>
 
+#include "absl/types/optional.h"
 #include "nlohmann/json.hpp"
 #include "yaml-cpp/yaml.h"
 
@@ -15,8 +16,8 @@ struct GradescopeTestConfig {
   // Gradescope required
   double max_score;
   std::string test_name;
-  std::string number;
-  GradescopeVisibility visibility;
+  absl::optional<std::string> number;
+  absl::optional<GradescopeVisibility> visibility;
   std::list<std::string> tags;
 
   // Extra data.
@@ -44,13 +45,18 @@ class GradescopeTestResults {
 template <>
 struct YAML::convert<stargrade::GradescopeTestConfig> {
   static bool decode(const Node &node, stargrade::GradescopeTestConfig &rhs) {
+    if (!node["id"]) return false;
+    if (!node["max_score"]) return false;
+    if (!node["name"]) return false;
     rhs.id = node["id"].as<std::string>();
     rhs.max_score = node["max_score"].as<double>();
     rhs.test_name = node["name"].as<std::string>();
     if (node["number"]) {
       rhs.number = node["number"].as<std::string>();
     }
-    rhs.visibility = node["visibility"].as<std::string>();
+    if (node["visibility"]) {
+      rhs.visibility = node["visibility"].as<std::string>();
+    }
     if (node["tags"]) {
       rhs.tags = node["tags"].as<std::list<std::string>>();
     }
