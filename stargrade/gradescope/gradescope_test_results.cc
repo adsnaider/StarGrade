@@ -9,7 +9,7 @@ void to_json(nlohmann::json &j, const GradescopeTestResults &test_results) {
     j["number"] = test_results.config_.number.value();
   }
   if (test_results.config_.visibility) {
-    j["visibility"] = test_results.config_.visibility.value();
+    j["visibility"] = test_results.config_.visibility->ToString();
   }
   if (!test_results.config_.tags.empty()) {
     j["tags"] = test_results.config_.tags;

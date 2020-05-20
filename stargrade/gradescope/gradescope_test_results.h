@@ -4,6 +4,7 @@
 #include <list>
 #include <string>
 
+#include "absl/strings/string_view.h"
 #include "absl/types/optional.h"
 #include "nlohmann/json.hpp"
 #include "yaml-cpp/yaml.h"
@@ -26,11 +27,17 @@ struct GradescopeTestConfig {
 
 class GradescopeTestResults {
  public:
+  GradescopeTestResults() = default;
+  GradescopeTestResults(const GradescopeTestResults &) = default;
+  GradescopeTestResults(GradescopeTestResults &&) noexcept = default;
+  GradescopeTestResults &operator=(const GradescopeTestResults &) = default;
+  GradescopeTestResults &operator=(GradescopeTestResults &&) noexcept = default;
+
   GradescopeTestResults(GradescopeTestConfig config)
       : score_(0.0), config_(std::move(config)) {}
 
   inline void Passed(bool pass) { score_ = pass ? config_.max_score : 0; }
-  inline void Output(std::string str) { output_ = std::move(str); }
+  inline void Output(absl::string_view str) { output_ = str; }
 
  private:
   double score_;
@@ -55,7 +62,8 @@ struct YAML::convert<stargrade::GradescopeTestConfig> {
       rhs.number = node["number"].as<std::string>();
     }
     if (node["visibility"]) {
-      rhs.visibility = node["visibility"].as<std::string>();
+      rhs.visibility = stargrade::GradescopeVisibility::FromString(
+          node["visibility"].as<std::string>());
     }
     if (node["tags"]) {
       rhs.tags = node["tags"].as<std::list<std::string>>();

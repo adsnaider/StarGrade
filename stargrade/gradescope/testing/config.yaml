@@ -1,0 +1,47 @@
+output: Wonderful gradescope
+stdout_visibility: visible
+test_parts:
+  - run: "stargrade/gradescope/testing/allpass.sh"
+    tests:
+      - id: id1
+        max_score: 10
+        name: test 1
+        visibility: hidden
+      - id: id2
+        max_score: 20
+        name: test 2
+        visibility: visible
+      - id: id3
+        max_score: 30
+        name: test 3
+        visibility: visible
+
+  - run: "stargrade/gradescope/testing/somepass.sh"
+    tests:
+      - id: id1
+        max_score: 10
+        name: test 1
+        visibility: hidden
+      - id: id2
+        max_score: 20
+        name: test 2
+        visibility: visible
+      - id: id3
+        max_score: 30
+        name: test 3
+        visibility: visible
+
+  - run: "stargrade/gradescope/testing/nopass.sh"
+    tests:
+      - id: id1
+        max_score: 10
+        name: test 1
+        visibility: hidden
+      - id: id2
+        max_score: 20
+        name: test 2
+        visibility: visible
+      - id: id3
+        max_score: 30
+        name: test 3
+        visibility: visible
