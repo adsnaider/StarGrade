@@ -79,12 +79,12 @@ void GradescopePartResults::Execute() {
       for (int i = 0; i < tokens.size(); ++i) {
         argv[i] = new char[tokens[i].size() + 1];
         strncpy(argv[i], tokens[i].c_str(), tokens[i].size() + 1);
+        VLOG(2) << "Run arg[" << i << "]: " << argv[i];
       }
       argv[tokens.size()] = nullptr;
-      VLOG(2) << "Run arg[" << i << "]: " << argv[i];
       execvp(argv[0], argv);
     } else if (config_.sh) {
-      VLOG(2) << "Run from shell: " << config_.sh;
+      VLOG(1) << "Run from shell: " << config_.sh.value();
       execlp("/bin/sh/", "/bin/sh/", "-c", config_.sh->c_str());
     }
   }
