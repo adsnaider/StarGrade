@@ -27,7 +27,7 @@ struct GradescopeTestConfig {
 class GradescopeTestResults {
  public:
   GradescopeTestResults(GradescopeTestConfig config)
-      : score_(-1.0), config_(std::move(config)) {}
+      : score_(0.0), config_(std::move(config)) {}
 
   inline void Passed(bool pass) { score_ = pass ? config_.max_score : 0; }
   inline void Output(std::string str) { output_ = std::move(str); }
