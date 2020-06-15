@@ -51,6 +51,10 @@ void GradescopePartResults::Execute() {
       // TODO: Deserialize
       GradescopePartOutput part_output = nlohmann::json::parse(test_result);
       for (const auto &test_output : part_output) {
+        if (tests_.count(test_output.id) == 0) {
+          // TODO: log something
+          continue;
+        }
         tests_.at(test_output.id).Passed(test_output.passed);
         tests_.at(test_output.id).Output(test_output.output);
       }
