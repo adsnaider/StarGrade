@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "absl/types/optional.h"
 #include "nlohmann/json.hpp"
 #include "yaml-cpp/yaml.h"
 
@@ -13,7 +14,8 @@
 namespace stargrade {
 
 struct GradescopePartConfig {
-  std::string run;
+  absl::optional<std::string> run;
+  absl::optional<std::string> sh;
   std::vector<GradescopeTestConfig> tests_config;
 };
 
@@ -44,9 +46,14 @@ typedef std::vector<GradescopeTestOutput> GradescopePartOutput;
 template <>
 struct YAML::convert<stargrade::GradescopePartConfig> {
   static bool decode(const Node &node, stargrade::GradescopePartConfig &rhs) {
-    if (!node["run"]) return false;
     if (!node["tests"]) return false;
-    rhs.run = node["run"].as<std::string>();
+    if (node["run"]) {
+      rhs.run = node["run"].as<std::string>();
+    } else if (node["sh"]) {
+      rhs.sh = node["sh"].as<std::string>();
+    } else {
+      return false;
+    }
     rhs.tests_config =
         node["tests"].as<std::vector<stargrade::GradescopeTestConfig>>();
     return true;

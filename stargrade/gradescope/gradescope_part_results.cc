@@ -63,20 +63,23 @@ void GradescopePartResults::Execute() {
     int ofd = fd[1];
     dup2(ofd, /*STD_OUTPUT*/ 1);
     // TODO: permissions?
-    std::istringstream s(config_.run);
-    std::vector<std::string> tokens;
-    std::string val;
-    while (s >> val) {
-      tokens.push_back(val);
+    if (config_.run) {
+      std::istringstream s(config_.run.value());
+      std::vector<std::string> tokens;
+      std::string val;
+      while (s >> val) {
+        tokens.push_back(val);
+      }
+      char **argv = new char *[tokens.size() + 1];
+      for (int i = 0; i < tokens.size(); ++i) {
+        argv[i] = new char[tokens[i].size() + 1];
+        strncpy(argv[i], tokens[i].c_str(), tokens[i].size() + 1);
+      }
+      argv[tokens.size()] = nullptr;
+      execvp(argv[0], argv);
+    } else if (config_.sh) {
+      execlp("/bin/sh/", "/bin/sh/", "-c", config_.sh->c_str());
     }
-    char **argv = new char *[tokens.size() + 1];
-    for (int i = 0; i < tokens.size(); ++i) {
-      argv[i] = new char[tokens[i].size() + 1];
-      strncpy(argv[i], tokens[i].c_str(), tokens[i].size() + 1);
-    }
-
-    argv[tokens.size()] = nullptr;
-    execvp(argv[0], argv);
   }
 }
 
