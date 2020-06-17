@@ -1,0 +1,22 @@
+syntax = 'proto3';
+
+package stargrade.proto;
+
+message TestResult {
+  bool passed = 1;
+  string output = 2;
+}
+
+message LogTestRequest {
+  TestResult result = 1;
+}
+
+message LogTestResponse {}
+
+service Tester {
+  rpc LogTest(LogTestRequest) returns (LogTestResponse) {}
+}
+
+message PartResult {
+  repeated TestResult tests = 1;
+}
