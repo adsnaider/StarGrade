@@ -6,9 +6,9 @@
 #include <unistd.h>
 #include <cmath>
 #include <cstring>
-#include <iostream>
 #include <sstream>
 
+#include "glog/logging.h"
 #include "nlohmann/json.hpp"
 
 namespace stargrade {
@@ -38,6 +38,7 @@ void GradescopePartResults::Execute() {
     int status;
     // TODO: Timeout?
     wait(&status);
+    VLOG(1) << "Finished executing test suite. Got status: " << status;
     // Error status?
     if (status == 0) {
       // Execution of subprocess went well. Test's output should be in ifd.
@@ -48,7 +49,7 @@ void GradescopePartResults::Execute() {
            count = read(ifd, buffer, BUFFER_SIZE)) {
         test_result.append(buffer, count);
       }
-      // TODO: Deserialize
+      VLOG(2) << "Got results: " << test_result;
       GradescopePartOutput part_output = nlohmann::json::parse(test_result);
       for (const auto &test_output : part_output) {
         if (tests_.count(test_output.id) == 0) {
@@ -59,7 +60,7 @@ void GradescopePartResults::Execute() {
         tests_.at(test_output.id).Output(test_output.output);
       }
     } else {
-      std::cerr << "Failure in tests.\n";
+      LOG(ERROR) << "Failure in tests.\n";
     }
   } else {
     // i.e. new "test" process.
@@ -78,10 +79,12 @@ void GradescopePartResults::Execute() {
       for (int i = 0; i < tokens.size(); ++i) {
         argv[i] = new char[tokens[i].size() + 1];
         strncpy(argv[i], tokens[i].c_str(), tokens[i].size() + 1);
+        VLOG(2) << "Run arg[" << i << "]: " << argv[i];
       }
       argv[tokens.size()] = nullptr;
       execvp(argv[0], argv);
     } else if (config_.sh) {
+      VLOG(1) << "Run from shell: " << config_.sh.value();
       execlp("/bin/sh/", "/bin/sh/", "-c", config_.sh->c_str());
     }
   }

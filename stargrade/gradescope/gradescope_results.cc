@@ -40,7 +40,7 @@ void to_json(nlohmann::json &j, const GradescopeResults &gradescope_results) {
   }
   if (gradescope_results.config_.stdout_visibility) {
     j["stdout_visibility"] =
-        gradescope_results.config_.stdout_visibility.value();
+        gradescope_results.config_.stdout_visibility->ToString();
   }
   nlohmann::json parts = gradescope_results.parts_;
   j["tests"] = nlohmann::json::array();

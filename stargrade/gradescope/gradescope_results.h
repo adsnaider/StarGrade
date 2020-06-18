@@ -45,7 +45,8 @@ struct YAML::convert<stargrade::GradescopeConfig> {
       rhs.output = node["output"].as<std::string>();
     }
     if (node["visibility"]) {
-      rhs.stdout_visibility = node["stdout_visibility"].as<std::string>();
+      rhs.stdout_visibility = stargrade::GradescopeVisibility::FromString(
+          node["stdout_visibility"].as<std::string>());
     }
     rhs.part_config =
         node["test_parts"].as<std::list<stargrade::GradescopePartConfig>>();

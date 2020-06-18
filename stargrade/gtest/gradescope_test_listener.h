@@ -12,6 +12,10 @@ namespace stargrade {
 
 // TODO: Figure out if there's a way to include the structure from
 // gradescope_part_results.h
+// TODO: How can we test this?
+//   1. Have a test binary (not a cc_test), that we can call. Compare the output
+//   of the binary with what we would expect
+//   2. Try to mock the GTest listener. Is this even possible?
 struct GradescopeTestOutput {
   std::string id;
   bool passed;
