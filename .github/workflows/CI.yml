@@ -35,5 +35,5 @@ jobs:
           
       
       - name: Run all tests
-        run: bazel test //...
+        run: bazel --cxxopt='-std=c++17' -c opt test //...
     
