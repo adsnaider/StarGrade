@@ -121,9 +121,11 @@ specification](https://gradescope-autograders.readthedocs.io/en/latest/specs/).
 
 ## Installation
 
-Currently, the only way to install StarGrade is by going into the release page
-in Github and downloading and installing the `.deb` package. This will only work
-for debian-based linux systems.
+Run the following commands to install stargrade on Linux or MacOS:
+
+`bazel run :install_starrun -- -s /usr/local/bin/`
+`bazel run :install_stargrade_gtest -- -s /usr/local/lib/`
+`bazel run :install_stargrade_gtest_headers -- -s /usr/local/include/stargrade/`
 
 ## Usage
 
