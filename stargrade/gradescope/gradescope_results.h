@@ -44,7 +44,7 @@ struct YAML::convert<stargrade::GradescopeConfig> {
     if (node["output"]) {
       rhs.output = node["output"].as<std::string>();
     }
-    if (node["visibility"]) {
+    if (node["stdout_visibility"]) {
       rhs.stdout_visibility = stargrade::GradescopeVisibility::FromString(
           node["stdout_visibility"].as<std::string>());
     }

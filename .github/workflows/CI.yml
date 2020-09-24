@@ -22,7 +22,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - uses: holvonix-open/setup-bazelisk@v0.6.0
-      
+
       - name: Install GTest
         run: |
           sudo apt-get install libgtest-dev
@@ -30,10 +30,10 @@ jobs:
           pushd /usr/src/gtest
           sudo cmake CMakeLists.txt
           sudo make
-          sudo cp *.a /usr/lib
+          sudo cp *.a /usr/local/lib
           popd
-          
-      
+
+
       - name: Run all tests
         run: bazel test -c opt --cxxopt='-std=c++17' //...
-    
+
