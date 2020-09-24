@@ -5,7 +5,6 @@ cc_library(
     srcs = ["gradescope_test_listener.cc"],
     hdrs = ["gradescope_test_listener.h"],
     linkopts = ["-l gtest"],
-    linkstatic = True,
     deps = [
         "@nlohmann//:json",
     ],
@@ -18,6 +17,5 @@ cc_library(
         "-l gtest",
         "-l pthread",
     ],
-    linkstatic = True,
     deps = [":gradescope_test_listener"],
 )
