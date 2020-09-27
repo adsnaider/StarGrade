@@ -16,7 +16,7 @@ test_parts:
         name: test 3
         visibility: visible
 
-  - run: "stargrade/gradescope/testing/somepass.sh"
+  - sh: "stargrade/gradescope/testing/somepass.sh"
     tests:
       - id: id1
         max_score: 10
