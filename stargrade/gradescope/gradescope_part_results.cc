@@ -85,7 +85,7 @@ void GradescopePartResults::Execute() {
       execvp(argv[0], argv);
     } else if (config_.sh) {
       VLOG(1) << "Run from shell: " << config_.sh.value();
-      execlp("/bin/sh/", "/bin/sh/", "-c", config_.sh->c_str());
+      execlp("/bin/sh", "/bin/sh", "-c", config_.sh->c_str());
     }
   }
 }
